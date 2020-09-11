@@ -229,3 +229,156 @@ function longestWordLength4(str) {
 };
 
 console.log(longestWordLength4('Hi therrrrre, my name is Don'));
+
+// CHALLENGE 2: ARRAY CHUNKING
+// Split an array into chunked arrays of a specific length
+// ex. chunkArray([1, 2, 3, 4, 5, 6, 7], 3) === [[1, 2, 3],[4, 5, 6],[7]]
+// ex. chunkArray([1, 2, 3, 4, 5, 6, 7], 2) === [[1, 2],[3, 4],[5, 6],[7]]
+
+//Solution 1 While Loop
+function chunkArray(arr, len) {
+  //Initialize chunked array
+  const chunkedArr = [];
+  //Set index
+  let i = 0; 
+
+  //Loop while index is less than array length
+  while (i < arr.length) {
+    //Slice out from the index to the index + the chunked length and push onto the chunked array
+    chunkedArr.push(arr.slice(i,i + len));
+  //increment by chunked length
+  i += len;
+  }
+  return chunkedArr
+}
+
+let output2 = chunkArray([1, 2, 3, 4, 5, 6, 7], 3);
+console.log(output2)
+
+//Solution 2 For Each High Order Array
+function chunkArray2(arr, len) {
+ //Initialize chunked array
+  const chunkedArr = [];
+// Loop through array
+arr.forEach(val => {
+  //get last element
+  const last = chunkedArr[chunkedArr.length - 1]
+
+  // Check if last and if last length is equal to the chunk len
+  if (!last || last.length === len) {
+    chunkedArr.push([val])
+  } else {
+    //Else pass in array of value
+    last.push(val);
+  }
+  });
+  return(chunkedArr)
+}
+ 
+let output3 = chunkArray2([1, 2, 3, 4, 5, 6, 7], 3);
+console.log(output3)
+
+
+// CHALLENGE 3: FLATTEN ARRAY
+// Take an array of arrays and flatten to a single array
+// ex. [[1, 2], [3, 4], [5, 6], [7]] = [1, 2, 3, 4, 5, 6, 7]
+
+//Solution 1
+function flattenArray(arrays) {
+return arrays.reduce( (a,b) => {
+  return a.concat(b)
+})
+}
+
+let output4 = flattenArray([[1, 2], [3, 4], [5, 6], [7]]);
+console.log(output4)
+
+//Solution 2
+function flattenArray2(arrays) {
+return[].concat.apply([],arrays)
+}
+
+let output5 = flattenArray2([[1, 2], [3, 4], [5, 6], [7]]);
+console.log(output5)
+
+//Solution 3 Spread Operator
+function flattenArray3(arrays) {
+return[].concat(...arrays)
+}
+
+let output6 = flattenArray3([[1, 6], [3, 1], [8, 6], [7]]);
+console.log(output6)
+
+// CHALLENGE 4: ANAGRAM
+// Return true if anagram and false if not
+// ex. 'elbow' === 'below'
+// ex. 'Dormitory' === 'dirty room##'
+
+//Solution 1 with Main and Helper Functions
+function isAnagram(str1, str2) {
+  return formatStr(str1) === formatStr(str2)
+}
+  //Helper function
+
+  function formatStr(str) {
+    return str
+    //Anything that doesn't match word character, replace with empty string
+    .replace(/[^\w]/g, '')
+    .toLowerCase()
+    .split('') //Convert to arrays
+    .sort()
+    .join('') //Convert back to string
+  }
+
+
+let output7 = isAnagram('elbow', 'below');
+console.log(output7)
+
+let output8 = isAnagram('Dormitory', 'dirty room##');
+console.log(output8)
+
+//Solution 2 Function using Every Method
+function isAnagramx (str1,str2){
+    const arr1 = str1.toLowerCase().split('').sort()
+    const arr2 = str2.toLowerCase().split('').sort()
+    return arr1.every((value,index) => value === arr2[index])
+}
+
+let output9 = isAnagramx('elbow', 'Below');
+console.log(output9)
+
+//Solution 3 Variable
+let isAnagramx2 = (str1,str2) => str1.toLowerCase().split('').sort().every((value,index) => value ===  str2.toLowerCase().split('').sort()[index])
+
+let output10 = isAnagramx2('Listen', 'siLent');
+console.log(output10)
+
+// CHALLENGE 5: LETTER CHANGES
+// Change every letter of the string to the one that follows it and capitalize the vowels
+// Z should turn to A
+// ex. 'hello there' === 'Ifmmp UIfsf'
+
+function letterChanges(str) {
+  //Create new variable for string replace letters a-z gi for global insensitive
+  let newStr = str.toLowerCase().replace(/[a-z]/gi, 
+  //takes in function as second paramter
+  function (char) {
+    if ( char === 'z' || char === 'Z') {
+      return 'a'
+    } else {
+      //Use String object and use character code. Add 1 to give us the next letter
+      return String.fromCharCode(char.charCodeAt() + 1)
+    }
+  })
+
+//New string to capitalize vowels. Reg expressions. takes in function as 2nd parameter
+  newStr = newStr.replace(/a|e|i|o|u/gi, function(vowel) {
+    return vowel.toUpperCase();
+  });
+  return newStr
+}
+
+// Call Function
+const output11 = letterChanges('hello there'); 
+
+console.log(output11);
